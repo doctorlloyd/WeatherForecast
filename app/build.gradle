@@ -73,13 +73,6 @@ dependencies {
     implementation androidx.hiltNavigationCompose
     implementation androidx.composeUiToolingPreview
 
-    // Local storage (persistence libraries)
-    implementation persistence.datastore
-    implementation persistence.roomRuntime
-    implementation persistence.roomKtx
-    implementation persistence.roomCommon
-    kapt persistence.roomCompiler
-
     // Data injection and testing libraries
     kapt di.hiltCompiler
     implementation di.hiltAndroid

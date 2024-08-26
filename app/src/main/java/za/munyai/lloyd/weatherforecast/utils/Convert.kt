@@ -53,7 +53,8 @@ fun getWeekDays():Array<String> {
     val weekDays = Array(5) { "" }
     for (i in 0..4) {
         val futureDate = today.plusDays(i.toLong() + 1)
-        weekDays[i] = futureDate.dayOfWeek.name
+        weekDays[i] = futureDate.dayOfWeek.name.lowercase(Locale.ROOT)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
     }
     return weekDays
 }

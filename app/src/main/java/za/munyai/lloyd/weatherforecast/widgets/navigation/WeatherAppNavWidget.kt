@@ -11,7 +11,7 @@ fun WeatherAppNavWidget() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = WeatherAppNavScreens.HomeScreen.name) {
         composable(WeatherAppNavScreens.HomeScreen.name) {
-            HomeScreen(navController = navController)
+            HomeScreen()
         }
     }
 }

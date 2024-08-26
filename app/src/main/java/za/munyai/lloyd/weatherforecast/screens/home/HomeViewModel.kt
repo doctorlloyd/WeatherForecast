@@ -22,8 +22,8 @@ class HomeViewModel@Inject constructor(private val repository: WeatherAppReposit
     var forecastsResponse : Flow<DataState<Forecast>> = forecastsDataState
 
     suspend fun getTodayWeather(lat: String, lon: String, key: String){
-        getWeeklyWeather(lat, lon, key)
         viewModelScope.launch {
+            getWeeklyWeather(lat, lon, key)
             repository.getTodayWeather(lat = lat, lon = lon, key = key).collectLatest {
                 weatherDataState.tryEmit(it)
             }

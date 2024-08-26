@@ -13,10 +13,12 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import za.munyai.lloyd.weatherforecast.R
 import za.munyai.lloyd.weatherforecast.models.forecast.Weather
 import za.munyai.lloyd.weatherforecast.models.weekforecasts.Forecast
@@ -31,7 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 @SuppressLint("SuspiciousIndentation")
 @Suppress("DEPRECATION")
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen() {
     // Used for side effects on submit button
     val viewModelJob = Job()
     val scope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -55,7 +57,7 @@ fun HomeScreen(navController: NavController) {
                 withContext(Dispatchers.Main) {
                     homeViewModel.weatherResponse.collectLatest {
                         when(it){
-                            is DataState.Success->{
+                            is DataState.Success-> {
                                 weather.value = it.data
                                 homeViewModel.forecastsResponse.collectLatest { week ->
                                     when(week) {
@@ -95,16 +97,19 @@ fun WeatherWidget(weather: MutableState<Weather>, weeklyWeather: MutableState<Fo
         else R.drawable.cloudy
         ), contentScale = ContentScale.FillBounds)) {
             Box(modifier = Modifier.fillMaxWidth().padding(12.dp)){
-                Text(text = "5 Days Forecast", color = Color.White, modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 8.dp))
+                Text(text = "5 Days Forecast",style = TextStyle(letterSpacing = 0.sp, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, lineHeight = 28.sp),
+                    modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 4.dp))
             }
             Divider(color = Color.White, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
-            LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            LazyColumn(modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp, top = 4.dp, bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(getWeekDays().size) { i ->
                     Card(modifier = Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 2.dp), backgroundColor = Color.White, border = BorderStroke(1.dp, MaterialTheme.colors.surface)){
-                        Row(modifier = Modifier.fillMaxSize().padding(end = 14.dp, start = 14.dp), horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(textAlign = TextAlign.Center, modifier = Modifier.weight(1f), text = getWeekDays()[i])
-                            Image(modifier = Modifier.weight(1f), painter = painterResource(id = getWeatherIcon(weatherList[i].weather!![0].icon!!)), contentDescription = null)
-                            Text(textAlign = TextAlign.Center, modifier = Modifier.weight(1f), text = "${"%.0f".format(convertTemperature(weatherList[i].main?.temp!!))} \u00B0C")
+                        Box(modifier = Modifier.fillMaxSize().padding(end = 8.dp, start = 10.dp)){
+                            Column(modifier = Modifier.align(Alignment.CenterStart).padding(8.dp)){
+                                Text(style = TextStyle(letterSpacing = 0.sp, fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 24.sp), textAlign = TextAlign.Center, text = getWeekDays()[i])
+                                Image(painter = painterResource(id = getWeatherIcon(weatherList[i].weather!![0].icon!!)), contentDescription = null)
+                            }
+                            Text(style = TextStyle(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold, fontSize = 36.sp, lineHeight = 36.sp), modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp), textAlign = TextAlign.Start, text = "${"%.0f".format(convertTemperature(weatherList[i].main?.temp!!))}\u00B0")
                         }
                     }
                 }

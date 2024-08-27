@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="home_tittle">5 Days Forecast</string>
+    <string name="rainy">rain</string>
+    <string name="clear">clear</string>
+    <string name="api_key">a0275f623914e5be09d2659de218d877</string>
 </resources>
